@@ -5,6 +5,7 @@ const alertController = require('../controllers/alertController');
 router.get('/', alertController.getAllAlerts);
 router.get('/stats', alertController.getAlertStats);
 router.get('/device/:deviceId', alertController.getDeviceAlerts);
+router.post('/test', alertController.testNotifications);
 router.put('/:id/resolve', alertController.resolveAlert);
 router.delete('/:id', alertController.deleteAlert);
 

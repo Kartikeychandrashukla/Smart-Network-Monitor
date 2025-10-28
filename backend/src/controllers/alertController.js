@@ -1,5 +1,6 @@
 const Alert = require('../models/Alert');
 const logger = require('../utils/logger');
+const notificationService = require('../services/notificationService');
 
 // Get all alerts
 exports.getAllAlerts = async (req, res) => {
@@ -167,6 +168,30 @@ exports.getAlertStats = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error fetching alert stats',
+      error: error.message
+    });
+  }
+};
+
+// Test notifications
+exports.testNotifications = async (req, res) => {
+  try {
+    logger.info('Testing notification system...');
+    const results = await notificationService.testNotifications();
+
+    res.json({
+      success: true,
+      message: 'Notification test completed',
+      results: {
+        email: results.email ? 'Sent successfully' : 'Failed or not configured',
+        telegram: results.telegram ? 'Sent successfully' : 'Failed or not configured'
+      }
+    });
+  } catch (error) {
+    logger.error(`Error testing notifications: ${error.message}`);
+    res.status(500).json({
+      success: false,
+      message: 'Error testing notifications',
       error: error.message
     });
   }
